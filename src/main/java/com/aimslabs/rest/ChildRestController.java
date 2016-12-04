@@ -43,10 +43,12 @@ public class ChildRestController {
         Parent parent = parentService.getParentById(child.getParent().getId());
         System.out.println("Parent Name: "+parent.getName());
         child.setParent(parent);
-        childService.saveChild(child);
         boolean isAutism = childService.isAutismDetected(child);
+        child.setAppResult(isAutism);
+        child.setSentFromMobileApp(true);
+        childService.saveChild(child);
 
-        if (isAutism == true) {
+        if (isAutism) {
             return "Autism";
         } else {
             return "Not Autism";
