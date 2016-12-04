@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Login</title>
+    <meta questionTitle="viewport" content="width=device-width, initial-scale=1"></meta>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div>
+    <nav class="navbar navbar-inverse row" style="padding-left: 100px;padding-right: 100px;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/}">Autism Barta</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" th:href="@{/dashboard}">Dashboard
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+                            <li><a th:href="@{/child}">My Childs</a></li>
+                            <li><a th:href="@{/profile}">Profile</a></li>
+                            <li th:if="${session.user != null}"><a th:href="@{/profile/create}">Create Profile</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" th:href="@{/admin/questions}">Admin
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a th:href="@{/admin/child?page=0}">Child List</a></li>
+                            <li><a th:href="@{/admin/questions}">Questions</a></li>
+                            <li><a th:href="@{/admin/questions/create}">Create Question</a></li>
+                        </ul>
+                    </li>
+                    <li><a th:href="@{/child/screening/start}">Start Screening</a></li>
+                </ul>
+                <!--IF NOT LOGGED IN-->
+                <ul th:if="${session.user == null}" class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+                <ul th:if="${session.user != null}" class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{/profile}"><span th:text="${session.user.getName()}"></span></a></li>
+                    <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav><!--END NAVBAR -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div th:if="${email != null}" class="col-sm-8 col-sm-offset-2 alert alert-warning">
+                <span th:if="${email != null}">User not registered!</span>
+            </div>
+            <div th:if="${message != null}" class="col-sm-8 col-sm-offset-2 alert alert-warning">
+                <span th:if="${message != null}" th:text="${message}"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <h3>Login:</h3>
+                <form class="form" th:action="@{/login}" method="post"
+                      enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label class="label label-primary" for="email">Email:</label>
+                        <input class="form-control" type="text" questionTitle="email" th:value="${email}" id="email"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label label-primary" for="password">Password:</label>
+                        <input class="form-control" type="password" id="password" questionTitle="password"></input>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Login</button>
+                    <div>
+                        <span>Haven't registered yet?</span>
+                        <a th:href="@{/register}">Register</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
